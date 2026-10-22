@@ -1,0 +1,24 @@
+# Decision flags – raised by the factory, closed by people (see build spec, section Decision flags)
+flags:
+  GROUP_BY:              {raised_when: "GROUP BY or DISTINCT in the cube SQL", default: "mart table imported without grouping", decides: tech_lead}
+  INNER_JOIN_FILTER:     {raised_when: "INNER JOIN in the cube SQL", default: "relationship; not-blank filter proposed on affected visuals", decides: tech_lead}
+  COMPOSITE_KEY:         {raised_when: "join on two or more columns", default: "concatenated key column on both sides", decides: tech_lead}
+  NON_EQUI_JOIN:         {raised_when: "join predicate other than equality", default: "no relationship; mitigation options listed", decides: tech_lead}
+  ROLE_PLAYING:          {raised_when: "same dimension joined on two keys", default: "duplicate dimension or inactive relationship", decides: tech_lead}
+  MANY_TO_MANY:          {raised_when: "key not unique on either side", default: "bridge table proposed", decides: tech_lead}
+  DERIVED_TABLE:         {raised_when: "subquery, CTE or UNION", default: "split into table queries; append for UNION", decides: tech_lead}
+  SCHEMA_CUBE:           {raised_when: "schema-based OLAP cube", default: "rebuilt from schema objects", decides: tech_lead}
+  FILTER_DIVERGENCE:     {raised_when: "shared table with different WHERE clauses", default: "widest scope loaded, filters at report level", decides: tech_lead}
+  FOLD_RISK:             {raised_when: "step outside the connector's folding whitelist", default: "step kept last, marked non-folding", decides: tech_lead}
+  WRANGLE:               {raised_when: "data wrangling steps on an MTDI table", default: "equivalent Power Query steps", decides: developer}
+  CROSS_TABLE_ATTRIBUTE: {raised_when: "derived attribute spans two tables", default: "DAX calculated column with RELATED", decides: developer}
+  PASS_THROUGH:          {raised_when: "ApplySimple or pass-through SQL", default: "known pattern translated, otherwise an empty placeholder column", decides: developer}
+  METRIC_PATTERN:        {raised_when: "metric outside the DAX pattern library", default: "Claude's proposal, untested", decides: developer_after_test}
+  SUBTOTAL_RULE:         {raised_when: "compound metric without smart totals", default: "SUMX over the visual grain", decides: developer}
+  OLAP_FUNCTION:         {raised_when: "running or moving function", default: "WINDOW or OFFSET pattern", decides: developer}
+  SEMI_ADDITIVE:         {raised_when: "first or last in fact", default: "closing-balance pattern", decides: developer}
+  NO_EQUIVALENT:         {raised_when: "visual or feature without a direct equivalent", default: "closest visual plus a note", decides: developer}
+  LAYOUT_APPROX:         {raised_when: "overlap or off-canvas position", default: "automatic grid", decides: developer}
+  PROMPT:                {raised_when: "prompt without a default answer", default: "slicer with no selection", decides: developer}
+  EXTRACT_GAP:           {raised_when: "definition not returned by the API", default: "object listed for manual capture in Workstation", decides: developer}
+statuses: [open, accepted, overridden, wont_fix]
