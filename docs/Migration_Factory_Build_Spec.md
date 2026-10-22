@@ -1,6 +1,6 @@
 # Smart Axiata – MSTR → Power BI Migration Factory – Build Spec
 
-22 Oct 2026 · Greg · Master copy: https://claude.ai/artifact/W5bzpmyrDGtsmNJEh5ybR9 (this file is a snapshot)
+22 Oct 2026 · Greg · Master copy: https://claude.ai/artifact/W5bzpmyrDGtsmNJEh5ybR9 (this file is a snapshot; the repo changes of 22 Oct – C5 merges-only, LARGE_MODEL, layout fixes – are not yet in the master copy)
 
 ## At a glance
 
@@ -93,8 +93,10 @@ Dashboards share a semantic model when they share fact tables and no hard condit
 | C2 | Same row scope on every shared table: identical WHERE predicates, or none | A shared table loads once; different filters change what each dashboard shows |
 | C3 | Same join semantics on every shared table pair: same keys, same join type | A table pair holds one active relationship; a second key means role-playing, a different join type is a filtering decision |
 | C4 | Same refresh cadence class, daily or hourly | A model refreshes as a unit; mixing either refreshes daily data hourly or leaves hourly data stale |
-| C5 | Estimated model size of 10 GB or less | A full refresh can need about twice the model size, and F64 caps one model at 25 GB |
+| C5 | Estimated size of the merged model of 10 GB or less | A full refresh can need about twice the model size, and F64 caps one model at 25 GB |
 | C6 | Same source connection for every shared table | The same table name in two databases is two tables |
+
+C5 judges merges only: a dashboard whose own model is already above 10 GB keeps a model of its own and goes to the storage-mode decision (import, DirectQuery, dual or aggregations), flagged LARGE_MODEL.
 
 C1, C4, C5 and C6 block a merge outright. A merge that fails only C2 or C3 is proposed with a flag (FILTER_DIVERGENCE or ROLE_PLAYING) and its options – load the widest scope and move the filters to report level, or add a role-playing dimension – for the Tech Lead to decide.
 
@@ -221,6 +223,7 @@ The factory never guesses: anything outside the rules becomes a flag with a defa
 | DERIVED_TABLE | Subquery, CTE or UNION | Split into table queries; append for UNION | Tech Lead |
 | SCHEMA_CUBE | Schema-based OLAP cube | Rebuilt from schema objects | Tech Lead |
 | FILTER_DIVERGENCE | Shared table with different WHERE clauses | Widest scope loaded, filters at report level | Tech Lead |
+| LARGE_MODEL | A dashboard's own model is estimated above 10 GB | Import model on its own, storage mode proposed | Tech Lead |
 | FOLD_RISK | Step outside the connector's folding whitelist | Step kept last, marked non-folding | Tech Lead |
 | WRANGLE | Data wrangling steps on an MTDI table | Equivalent Power Query steps | Developer |
 | CROSS_TABLE_ATTRIBUTE | Derived attribute spans two tables | DAX calculated column with RELATED | Developer |
@@ -267,7 +270,7 @@ Validation runs twice. Pass 1, during generation, checks that every dashboard op
 The repo keeps code, rules and generated PBIP side by side; Claude Code works from a CLAUDE.md with hard rules and one skill per stage. Where the POC already covers a stage, keep its code and adopt the contracts – IR files, model map, decision logs.
 
 ```
-smart-mstr2pbi/
+smart-pbi-migration/
 ├── CLAUDE.md
 ├── .claude/skills/
 │   ├── extract/SKILL.md         # /extract – stages 1–2
@@ -283,6 +286,7 @@ smart-mstr2pbi/
 ├── theme/        # template theme JSON and base page
 ├── registry.yaml       # 151 dashboards: ID, wave, model, status
 ├── consolidation.yaml  # approved model map
+├── review/             # consolidation review table for the Tech Lead
 ├── extract/  ir/       # metadata only
 ├── models/<model>.SemanticModel/   # TMDL
 ├── reports/<dashboard>.Report/     # PBIR
@@ -291,9 +295,9 @@ smart-mstr2pbi/
 └── data/         # git-ignored: exports and diffs, never read by Claude
 ```
 
-**Skills.** Stage skills set `disable-model-invocation: true`, so they run only when the team types the slash command, and per-dashboard generation sets `context: fork` to run in its own subagent context. Reference skills such as `dax-patterns` stay loadable by Claude on demand.
+**Skills.** Stage skills set `disable-model-invocation: true`, so they run only when the team types the slash command, and per-model and per-dashboard generation (build-model, build-report) set `context: fork` to run in their own subagent context. Reference skills such as `dax-patterns` stay loadable by Claude on demand.
 
-**CLAUDE.md** – the draft ships as a separate file in this starter kit.
+**CLAUDE.md** – lives at the repo root and holds the hard rules every stage follows.
 
 **Tooling.** mstrio-py (Python 3.10+; the account needs the Use Library privilege), sqlglot, the Power BI Modeling MCP server (public preview) and a JSON schema validator for PBIR. Worth evaluating: the community `pbir-cli` and the power-bi-agentic-development skills – third-party, so reviewed before use.
 

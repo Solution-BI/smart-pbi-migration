@@ -13,5 +13,5 @@ Skip the dashboard if registry.yaml marks it `locked`.
 - One page per MicroStrategy page, named "Chapter – Page" when there is more than one chapter; every page starts from the template in theme/.
 - Visual types from rules/visuals.yaml; titles copied word for word; sort order and number formats carried over.
 - Filter panel filters go to the filter pane – report level for one chapter, page level otherwise. Selectors become slicers; selector targets become edit interactions.
-- Anything unmapped becomes a NO_EQUIVALENT or LAYOUT_APPROX flag.
+- Anything unmapped becomes a NO_EQUIVALENT or LAYOUT_APPROX flag; a prompt without a default answer becomes a PROMPT flag.
 - Validate every file against the PBIR JSON schemas before finishing.

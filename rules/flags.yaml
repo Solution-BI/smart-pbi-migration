@@ -9,6 +9,7 @@ flags:
   DERIVED_TABLE:         {raised_when: "subquery, CTE or UNION", default: "split into table queries; append for UNION", decides: tech_lead}
   SCHEMA_CUBE:           {raised_when: "schema-based OLAP cube", default: "rebuilt from schema objects", decides: tech_lead}
   FILTER_DIVERGENCE:     {raised_when: "shared table with different WHERE clauses", default: "widest scope loaded, filters at report level", decides: tech_lead}
+  LARGE_MODEL:           {raised_when: "a dashboard's own model is estimated above 10 GB", default: "import model on its own, storage mode proposed", decides: tech_lead}
   FOLD_RISK:             {raised_when: "step outside the connector's folding whitelist", default: "step kept last, marked non-folding", decides: tech_lead}
   WRANGLE:               {raised_when: "data wrangling steps on an MTDI table", default: "equivalent Power Query steps", decides: developer}
   CROSS_TABLE_ATTRIBUTE: {raised_when: "derived attribute spans two tables", default: "DAX calculated column with RELATED", decides: developer}
@@ -22,3 +23,8 @@ flags:
   PROMPT:                {raised_when: "prompt without a default answer", default: "slicer with no selection", decides: developer}
   EXTRACT_GAP:           {raised_when: "definition not returned by the API", default: "object listed for manual capture in Workstation", decides: developer}
 statuses: [open, accepted, overridden, wont_fix]
+# The spec flags these cases without a code; each needs a code before the pilot (no unknown codes allowed)
+uncoded_flags:
+  - {case: "custom transformation table in a metric", spec_section: "Model rules – Metrics", code: to_confirm_in_pilot}
+  - {case: "complex threshold logic on a visual", spec_section: "Report rules – Structure", code: to_confirm_in_pilot}
+  - {case: "cube SQL view missing, tables read from the cube definition", spec_section: "Open points", code: to_confirm_in_pilot}

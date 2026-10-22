@@ -1,0 +1,22 @@
+# MicroStrategy metrics → DAX measures (build spec, section Model rules – Metrics; dax-patterns skill)
+source: "expression and dimensionality from the Modeling API"
+patterns:
+  basic_aggregation:      {mstr: "Sum, Avg, Min, Max, Count on a fact", dax: "SUM, AVERAGE, MIN, MAX, COUNT on the fact column", flag: null}
+  count_distinct:         {mstr: "count distinct of an attribute", dax: "DISTINCTCOUNT on the fact table's key column, not the dimension's", flag: null}
+  compound_smart_totals:  {mstr: "compound metric with smart totals", dax: "DIVIDE([A], [B])", flag: null}
+  compound_no_smart:      {mstr: "compound metric without smart totals", dax: "SUMX over the visual grain", flag: SUBTOTAL_RULE}
+  level_metric:           {mstr: "dimensionality set to ignore or absolute", dax: "CALCULATE([Base], REMOVEFILTERS(…)) or ALLEXCEPT, from the dimensionality units", flag: null}
+  conditional_metric:     {mstr: "conditional metric", dax: "CALCULATE([Base], <filter>), checking the report-filter settings", flag: null}
+  transformation:         {mstr: "last year, YTD, MTD, previous month", dax: "SAMEPERIODLASTYEAR, DATESYTD, DATESMTD, DATEADD on the Date table", flag: null}
+  custom_transformation:  {mstr: "custom transformation table", dax: to_confirm_in_pilot, flag: to_confirm_in_pilot}
+  percent_to_total:       {mstr: "percent to total", dax: "DIVIDE([M], CALCULATE([M], ALLSELECTED(…)))", flag: null}
+  rank:                   {mstr: "rank", dax: "RANKX over ALLSELECTED", flag: null}
+  running_moving:         {mstr: "running and moving functions", dax: "WINDOW or OFFSET patterns", flag: OLAP_FUNCTION}
+  semi_additive:          {mstr: "first or last in fact", dax: "LASTNONBLANKVALUE or a closing-balance pattern", flag: SEMI_ADDITIVE}
+outside_patterns: {flag: METRIC_PATTERN, default: "Claude's proposal, untested", closes: "after a test against MicroStrategy values"}
+measures:
+  table: _Measures
+  ratios: DIVIDE
+  format_string: "MicroStrategy format string"
+  display_folders: "mirror the MicroStrategy folders"
+  annotation: "metric ID"

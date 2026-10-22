@@ -1,0 +1,25 @@
+# Factory thresholds (build spec). Starting values, calibrated in the pilot.
+consolidation:
+  merge_score_min: 0.6            # weighted Jaccard overlap on fact tables
+  subset_score: 1.0               # fact tables a subset of the model's
+  merged_model_max_gb: 10         # C5 – judges merges only; a dashboard above this alone gets LARGE_MODEL
+  capacity_model_limit_gb: 25     # F64 cap on one model
+  refresh_memory_factor: 2        # a full refresh can need about twice the model size
+  soft_limits:
+    dashboards_per_model: 15
+    tables_per_model: 40
+validation:
+  pass_1:
+    row_count_tolerance: 0.05     # within 5% of MicroStrategy, default filter state
+    measure_total_tolerance: 0.01 # each measure total within 1%
+    rating_bands: to_confirm_in_pilot   # how green, amber and red are derived from the tolerances
+  pass_2:
+    match: "exact at displayed precision"
+    response_time: "no slower than the MicroStrategy baseline"
+pilot_go:
+  objects_without_flag_min: 0.80
+  visuals_green_pass_1_min: 0.70
+  unknown_flag_codes_max: 0
+  data_values_in_context_max: 0
+  folding_confirmed_connectors: [postgresql, cloudera, clickhouse]
+  review_budget: {hours_per_cube: 1, hours_per_visual: 0.5}

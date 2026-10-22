@@ -1,6 +1,6 @@
 # Smart Axiata – MSTR → Power BI/Fabric Migration – Technical Context
 
-22 Oct 2026 · Greg · Master copy: https://claude.ai/artifact/6UT1sRkJwTeVEhDXM7dc3v (this file is a snapshot)
+22 Oct 2026 · Greg · Master copy: https://claude.ai/artifact/6UT1sRkJwTeVEhDXM7dc3v (this file is a snapshot; the repo changes of 22 Oct – build spec links, LARGE_MODEL – are not yet in the master copy)
 
 ## Engagement at a glance
 
@@ -130,7 +130,7 @@ The plan runs eight 3-week sprints with Foundation in parallel from day one: P1 
 
 Foundation runs alongside the first build sprint, with development starting in Power BI Desktop, so platform readiness never blocks the build.
 
-**AI-assisted build.** A migration factory generates version 1 of all 151 dashboards in one run – models as TMDL, reports as PBIR – with a list of decision flags per dashboard. The team then reviews and refines them sprint by sprint in P1/P2 order (SBI · Greg, 22 Oct). Details in the [build spec](https://claude.ai/artifact/W5bzpmyrDGtsmNJEh5ybR9).
+**AI-assisted build.** A migration factory generates version 1 of all 151 dashboards in one run – models as TMDL, reports as PBIR – with a list of decision flags per dashboard. The team then reviews and refines them sprint by sprint in P1/P2 order (SBI · Greg, 22 Oct). Details in the [build spec](docs/Migration_Factory_Build_Spec.md) (master copy: [artifact](https://claude.ai/artifact/W5bzpmyrDGtsmNJEh5ybR9)).
 
 **Sequencing.** Priority first, complexity second. S1 takes the four heaviest dashboards (46–49 cubes each), the custom map visual and the site count metric, so the hardest semantic-model patterns are proven while there is runway. Each later sprint mixes one or two complex dashboards with simpler ones (SBI · proposal V2.0).
 
@@ -200,7 +200,7 @@ The biggest open risk is MicroStrategy availability after 1 January 2027: the pl
 | Open item | Why it matters | Owner |
 | --- | --- | --- |
 | MicroStrategy after 1 Jan 2027: procurement wrote that an extension is not an option (Confirmed · email), while notes of 3 Sep mention a one-year renewal (Unverified) | Parity checks and UAT need MicroStrategy running; if it stops, data and execution-time baselines must be exported per report beforehand | Greg, with Smart |
-| Largest cube 21 GB / 141M rows (Unverified · notes 3 Sep) against a 25 GB model ceiling on F64; five cubes above 10 GB | Drives the SKU and the storage mode per model: import, DirectQuery, dual or aggregations. Direct Lake is not a switch – it needs data in OneLake, outside today's scope | Tech Lead, measured in Foundation |
+| Largest cube 21 GB / 141M rows (Unverified · notes 3 Sep) against a 25 GB model ceiling on F64; five cubes above 10 GB | Drives the SKU and the storage mode per model: import, DirectQuery, dual or aggregations. A dashboard whose own model is above 10 GB keeps a model of its own, flagged LARGE_MODEL (build spec, C5). Direct Lake is not a switch – it needs data in OneLake, outside today's scope | Tech Lead, measured in Foundation |
 | Users: ~200, ~50 peak concurrent, ~40 authors (scoping answers) versus 10–15 active users (notes 3 Sep) | Workspace and audience design, concurrency load, number of authoring licences | Smart – pull counts from Platform Analytics |
 | Inventory headers: is "Total Visualization Count" the page count? | Report effort is 0.5 h per visual; a wrong reading shifts every sprint | Smart |
 | Rule that only aggregated data leaves on-premise (scoping answers) | Import models copy data into the Power BI service; confirm each cube in scope already meets the rule | Smart, confirmed in Foundation |
@@ -214,7 +214,7 @@ The biggest open risk is MicroStrategy availability after 1 January 2027: the pl
 | Refresh: ETL completion times per source | Time-based schedules must follow ETL, since event triggers come after migration | Smart |
 | Sprint calendar: confirmed start date and the official 2026–27 Cambodian holidays (about 8 days assumed for Oct–Dec) | Capacity per sprint and the P1 date | SBI PM |
 
-SQL and join patterns – GROUP BY, inner joins, composite keys, non-equi and role-playing joins – are raised per dashboard as decision flags by the migration factory and decided by the team; see the [build spec](https://claude.ai/artifact/W5bzpmyrDGtsmNJEh5ybR9).
+SQL and join patterns – GROUP BY, inner joins, composite keys, non-equi and role-playing joins – are raised per dashboard as decision flags by the migration factory and decided by the team; see the [build spec](docs/Migration_Factory_Build_Spec.md) (master copy: [artifact](https://claude.ai/artifact/W5bzpmyrDGtsmNJEh5ybR9)).
 
 ## Stakeholders and roles
 

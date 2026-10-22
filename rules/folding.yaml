@@ -1,0 +1,34 @@
+# Power Query folding whitelist – one query per source table (build spec, section Model rules – Queries)
+# Anything the spec does not state is marked to_confirm_in_pilot; never guess an M function.
+query_per: source_table
+forbidden_functions: [Value.NativeQuery, Odbc.Query]
+connectors:
+  postgresql:
+    connector: "certified PostgreSQL connector"
+    m_function: to_confirm_in_pilot
+    folding_confirmed: to_confirm_in_pilot
+  cloudera:
+    connector: "certified Impala or Hive connector"
+    driver: "Impala or Hive driver on every Desktop and on the gateway"
+    m_function: to_confirm_in_pilot
+    folding_confirmed: to_confirm_in_pilot
+  clickhouse:
+    connector: "certified ClickHouse connector"
+    driver: "ClickHouse ODBC driver on every Desktop and on the gateway"
+    m_function: to_confirm_in_pilot
+    folding_confirmed: to_confirm_in_pilot
+parameters:
+  file: expressions.tmdl
+  holds: [server, database]
+  purpose: "one model points at dev or prod"
+  parameter_names: to_confirm_in_pilot
+steps:   # fixed order
+  - {order: 1, step: source, m_function: to_confirm_in_pilot}
+  - {order: 2, step: navigation, m_function: to_confirm_in_pilot}
+  - {order: 3, step: select_columns, rule: "the union of the columns the model's dashboards use", m_function: to_confirm_in_pilot}
+  - {order: 4, step: filter_rows, rule: "single-table predicates identical across the model", m_function: to_confirm_in_pilot}
+  - {order: 5, step: rename_columns, rule: "business names from MicroStrategy", m_function: to_confirm_in_pilot}
+  - {order: 6, step: set_types, m_function: to_confirm_in_pilot}
+  - {order: 7, step: derived_columns, rule: "last, after the folding steps", functions: "rules/attributes.yaml"}
+outside_whitelist: {flag: FOLD_RISK, default: "step kept last, marked non-folding"}
+folding_check: "generated SQL visible in Desktop's native query view or the source's query log, per connector"

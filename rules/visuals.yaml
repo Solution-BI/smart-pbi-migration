@@ -1,0 +1,46 @@
+# MicroStrategy layout → PBIR (build spec, section Report rules)
+# PBIR visual and slicer types are not stated in the spec: to_confirm_in_pilot; never guess a type.
+structure:
+  binding: "definition.pbir by path during development; connection switches at deployment"
+  pages: "one Power BI page per MicroStrategy page"
+  page_name_multi_chapter: "Chapter – Page"
+  canvas_and_base_page: "from the template in theme/"
+  positions: "mapped proportionally onto the template's content area"
+  overlap_or_off_canvas: {flag: LAYOUT_APPROX, default: "automatic grid"}
+  titles: "kept word for word"
+  carry_over: [sort_order, number_formats]
+  thresholds: {target: "conditional formatting rules", complex_logic_flag: to_confirm_in_pilot}
+  prompt_with_default: "slicer set to the prompt's default answer"
+  prompt_without_default: {flag: PROMPT, default: "slicer with no selection"}
+visual_map:
+  grid_flat:            {mstr: "Grid, flat", power_bi: "Table", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  grid_pivoted:         {mstr: "Grid with attributes or metrics on columns", power_bi: "Matrix", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  bar:                  {mstr: "Bar, vertical or horizontal – clustered, stacked or 100%", power_bi: "Column or bar chart of the same kind", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  line_area:            {mstr: "Line, area", power_bi: "Line, area", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  dual_axis:            {mstr: "Dual axis", power_bi: "Line and clustered column", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  pie_ring:             {mstr: "Pie, ring", power_bi: "Pie, donut", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  kpi:                  {mstr: "KPI, big number", power_bi: "Card", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  heat_map:             {mstr: "Heat map", power_bi: "Treemap", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  bubble_scatter:       {mstr: "Bubble, scatter", power_bi: "Scatter", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  gauge_waterfall:      {mstr: "Gauge, waterfall", power_bi: "Gauge, waterfall", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  custom_shape_map:     {mstr: "Map with custom shapes for administrative divisions", power_bi: "Custom map visual (S1 deliverable); placeholder until it exists", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  text_image:           {mstr: "Text, image", power_bi: "Text box, image", pbir_visual_type: to_confirm_in_pilot, flag: null}
+  no_equivalent:        {mstr: "HTML container, network, Sankey, box plot, histogram", power_bi: "Closest visual plus a note", pbir_visual_type: to_confirm_in_pilot, flag: NO_EQUIVALENT}
+filters:
+  filter_panel:         {mstr: "Filter panel filter (chapter level)", power_bi: "Filter pane: report level with one chapter, page level on each page of the chapter otherwise"}
+  element_list:         {mstr: "Element list filter", power_bi: "Basic filter, default selections kept"}
+  qualification:        {mstr: "Qualification filter on an attribute or metric", power_bi: "Advanced filter, or Top N"}
+selectors:
+  dropdown:             {mstr: "Dropdown selector", power_bi: "Dropdown slicer", pbir_type: to_confirm_in_pilot}
+  checkbox_list:        {mstr: "Checkbox or list selector", power_bi: "List slicer, multi-select", pbir_type: to_confirm_in_pilot}
+  radio_link_button:    {mstr: "Radio button, link bar, button bar", power_bi: "Button slicer, single select", pbir_type: to_confirm_in_pilot}
+  slider:               {mstr: "Slider on an attribute or metric", power_bi: "Range slicer", pbir_type: to_confirm_in_pilot}
+  search_box:           {mstr: "Search box", power_bi: "Slicer with search on", pbir_type: to_confirm_in_pilot}
+interactions:
+  selector_targets:     {mstr: "Selector targeting specific visuals", power_bi: "Edit interactions: visuals outside the target set to none"}
+  visual_as_filter:     {mstr: "Visualization used as filter", power_bi: "Interaction set to filter, not highlight"}
+  panel_stack_infowindow_link: {mstr: "Panel stack, information window, link to another dashboard", power_bi: "Bookmarks, tooltip page or drillthrough – proposed", flag: NO_EQUIVALENT}
+theme:
+  source: "theme/ template: theme JSON, base page, canvas size"
+  registered_on: every_report
+  visual_level_colours_and_fonts: "never, except where a MicroStrategy threshold requires it"

@@ -1,0 +1,25 @@
+# Derived attributes → Power Query (build spec, section Model rules – Derived attributes)
+display:
+  form: DESC
+  sort_by: "ID form (Sort By Column)"
+  keys: hidden
+row_level_single_table:
+  target: "custom column in that table's query, after the folding steps"
+  functions:
+    Concat:  {m: "&"}
+    If:      {m: "if … then … else"}
+    Case:    {m: "if … then … else"}
+    Year:    {m: Date.Year}
+    Month:   {m: Date.Month}
+    Quarter: {m: Date.QuarterOfYear}
+    Left:    {m: Text.Start}
+    Right:   {m: Text.End}
+    SubStr:  {m: Text.Middle, offset_shift: -1, note: "SubStr counts from 1, Text.Middle from 0"}
+    Upper:   {m: Text.Upper}
+    Lower:   {m: Text.Lower}
+    Trim:    {m: Text.Trim}
+  function_not_in_map: {m: to_confirm_in_pilot, flag: to_confirm_in_pilot}
+cross_table:       {target: "DAX calculated column with RELATED", flag: CROSS_TABLE_ATTRIBUTE}
+pass_through:      {applies_to: "ApplySimple and other pass-through SQL", flag: PASS_THROUGH, default: "known pattern translated, otherwise an empty placeholder column"}
+derived_elements:  {target: "conditional column, or a mapping table when the groups are long", long_groups_threshold: to_confirm_in_pilot}
+wrangling:         {applies_to: "data wrangling steps on an MTDI table", target: "equivalent Power Query steps", flag: WRANGLE}

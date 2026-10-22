@@ -20,6 +20,8 @@ Read the expression tree and dimensionality units from the Modeling API extract,
 | Running and moving functions | WINDOW or OFFSET – flag OLAP_FUNCTION |
 | First or last in fact | LASTNONBLANKVALUE or a closing-balance pattern – flag SEMI_ADDITIVE |
 
+The same table lives in rules/metrics.yaml for the generator.
+
 Rules:
 - Use DIVIDE for every ratio.
 - Keep the MicroStrategy format string and add the metric ID as an annotation.

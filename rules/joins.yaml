@@ -1,0 +1,14 @@
+# SQL joins → Power BI relationships (build spec, section Model rules – Joins → relationships)
+joins:
+  equi_join_unique_key: {sql: "equi-join on one column, unique dimension key", power_bi: "one-to-many, single direction, dimension → fact", flag: null}
+  left_join:            {sql: "LEFT JOIN fact → dimension", power_bi: "same relationship, same semantics", flag: null}
+  inner_join:           {sql: "INNER JOIN", power_bi: "relationship; fact rows without a match now show under blank", flag: INNER_JOIN_FILTER}
+  group_by:             {sql: "GROUP BY or DISTINCT", power_bi: "mart table imported as is, no grouping", flag: GROUP_BY}
+  composite_key:        {sql: "join on two or more columns", power_bi: "concatenated key column on both sides", flag: COMPOSITE_KEY}
+  non_equi_join:        {sql: "BETWEEN, <, > in the join", power_bi: "no relationship until mitigated", flag: NON_EQUI_JOIN}
+  role_playing:         {sql: "same dimension joined twice", power_bi: "duplicate dimension, or inactive relationship plus USERELATIONSHIP", flag: ROLE_PLAYING}
+  many_to_many:         {sql: "key not unique on either side", power_bi: "bridge table", flag: MANY_TO_MANY}
+  derived_table:        {sql: "subquery, CTE, UNION", power_bi: "split into table queries; UNION becomes an append", flag: DERIVED_TABLE}
+  schema_cube:          {sql: "schema-based OLAP cube", power_bi: "rebuilt from schema objects through the Modeling API, not from generated multi-pass SQL", flag: SCHEMA_CUBE}
+date_table: "one Date table per model, marked as date table, related to every fact date column used by a time-based metric"
+keys: hidden
