@@ -1,0 +1,104 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "1bcc19bdfb12b6000e25",
+  "position": {
+    "x": 970,
+    "y": 116,
+    "width": 310,
+    "height": 134,
+    "z": 3000,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_sales_by_region_2"
+                    }
+                  },
+                  "Property": "Net Profit"
+                }
+              },
+              "queryRef": "fact_sales_by_region_2.Net Profit",
+              "nativeQueryRef": "Net Profit"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "38D"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Net Profit'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "annotations": [
+    {
+      "name": "mstrKey",
+      "value": "WBD8D646D9F8340C8A4E18CB37B84F357"
+    },
+    {
+      "name": "mstrType",
+      "value": "kpi"
+    }
+  ]
+}

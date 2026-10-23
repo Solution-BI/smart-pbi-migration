@@ -1,0 +1,18 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["fact_sales_by_region","SourceServer","SourceWarehouse","SourceDatabase"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table fact_sales_by_region
+
+ref cultureInfo en-US
+

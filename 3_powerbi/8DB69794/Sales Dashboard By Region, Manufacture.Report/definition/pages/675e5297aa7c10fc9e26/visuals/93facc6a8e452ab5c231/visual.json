@@ -1,0 +1,104 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "93facc6a8e452ab5c231",
+  "position": {
+    "x": 327,
+    "y": 116,
+    "width": 310,
+    "height": 134,
+    "z": 4000,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_sales_by_region_2"
+                    }
+                  },
+                  "Property": "Discount Amount"
+                }
+              },
+              "queryRef": "fact_sales_by_region_2.Discount Amount",
+              "nativeQueryRef": "Discount Amount"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "38D"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Discount'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "annotations": [
+    {
+      "name": "mstrKey",
+      "value": "W7E9B926D2BED460AAF2D3729CC9AF534"
+    },
+    {
+      "name": "mstrType",
+      "value": "kpi"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+expression SourceServer = "<postgres-server>" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: d74cf57b-5fde-445f-b523-137d8c6f0a68
+
+	annotation PBI_ResultType = Text
+
+expression SourceDatabase = "<postgres-database>" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 381d39b3-ef0b-42aa-929b-37bbbc8df09e
+
+	annotation PBI_ResultType = Text
+

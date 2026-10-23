@@ -1,0 +1,170 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "e08d8ab4a74447d4ed62",
+  "position": {
+    "x": 71.455287669997077,
+    "y": 469.56331897426645,
+    "z": 5000,
+    "height": 192.67407925302783,
+    "width": 1193.0481066329869,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim Year Month"
+                    }
+                  },
+                  "Property": "Year Month Short Desc"
+                }
+              },
+              "queryRef": "Dim Year Month.Year Month Short Desc",
+              "nativeQueryRef": "Year Month Short Desc",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact tr_oc_yyyymm"
+                    }
+                  },
+                  "Property": "Occupancy (Metric)"
+                }
+              },
+              "queryRef": "Fact tr_oc_yyyymm.Occupancy (Metric)",
+              "nativeQueryRef": "Occupancy (Metric)",
+              "displayName": "Occupancy"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "valueAxis": [
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Occupancy'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Year Month'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'MONTHLY TREND'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "95aebd8b55c5045294f0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim Year Month"
+              }
+            },
+            "Property": "Year Month Short Desc"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "775beb2a071db1c7fa10",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact tr_oc_yyyymm"
+              }
+            },
+            "Property": "Occupancy (Metric)"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "name": "mstrKey",
+      "value": "W1340"
+    },
+    {
+      "name": "mstrType",
+      "value": "grid"
+    }
+  ]
+}

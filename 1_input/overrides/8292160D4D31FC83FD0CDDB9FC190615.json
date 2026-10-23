@@ -1,0 +1,22 @@
+{
+  "_help": "Corrections the MicroStrategy API cannot give, applied on every rebuild. 'items' are keyed by MicroStrategy visualization/selector key (see 2_work/<ID>/1_extract/migration_spec.md): visualType (Power BI type, e.g. clusteredColumnChart, clusteredBarChart, lineChart, tableEx), title, position {x, y, width, height} in the page's units, note. 'pages' sets a page's width and height in the same units. Values below were read from 1_extract/raw/dashboard.pdf, page 1 (pixels of that page).",
+  "source": "05 Occuppancy (Report Services document), Mall Analytics (DEV)",
+  "pages": {
+    "K36": {"width": 1260, "height": 870}
+  },
+  "items": {
+    "W1215": {"position": {"x": 252, "y": 72, "width": 170, "height": 58}},
+    "W708": {"title": "MALL SUMMARY", "position": {"x": 70, "y": 142, "width": 568, "height": 245}},
+    "W1354": {"visualType": "clusteredColumnChart", "title": "BY AREA",
+              "position": {"x": 667, "y": 142, "width": 578, "height": 205}},
+    "W1366": {"position": {"x": 70, "y": 394, "width": 568, "height": 44}},
+    "W1368": {"position": {"x": 665, "y": 394, "width": 580, "height": 44}},
+    "W1340": {"visualType": "clusteredColumnChart", "title": "MONTHLY TREND",
+              "note": "MicroStrategy also draws a linear trend line over the bars; Power BI column charts on a text axis have none.",
+              "position": {"x": 70, "y": 446, "width": 1175, "height": 206}},
+    "W1329": {"visualType": "clusteredBarChart", "title": "BY FLOOR",
+              "position": {"x": 70, "y": 667, "width": 570, "height": 185}},
+    "W1359": {"visualType": "clusteredColumnChart", "title": "BY SHOP TYPE",
+              "position": {"x": 667, "y": 667, "width": 578, "height": 187}}
+  }
+}

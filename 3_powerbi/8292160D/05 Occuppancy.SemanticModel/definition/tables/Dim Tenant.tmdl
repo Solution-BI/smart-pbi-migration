@@ -1,0 +1,38 @@
+/// Dimension public.lu_te_tenant: MicroStrategy lookup table of attribute Tenant
+table 'Dim Tenant'
+	lineageTag: d48d6ed7-0387-47c0-95dd-accb5976f408
+
+	/// MicroStrategy attribute Tenant / form ID
+	column 'Tenant ID'
+		dataType: int64
+		lineageTag: 450b1e89-bcaf-4341-85fa-77c7a7b4f653
+		summarizeBy: none
+		sourceColumn: Tenant ID
+
+	/// MicroStrategy attribute Tenant / form DESC
+	column Tenant
+		dataType: string
+		lineageTag: e0534e6e-776b-494d-a649-ead3cb92061a
+		summarizeBy: none
+		sourceColumn: Tenant
+		sortByColumn: 'Tenant ID'
+
+	column id_te_company
+		dataType: int64
+		isHidden
+		lineageTag: 3b327fea-ad67-4d5f-a3cc-fe15b2324eaa
+		summarizeBy: none
+		sourceColumn: id_te_company
+
+	partition 'Dim Tenant' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_te_tenant"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_te_tenant", "ds_te_tenant", "id_te_company"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_te_tenant", "Tenant ID"}, {"ds_te_tenant", "Tenant"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Tenant ID", Int64.Type}, {"Tenant", type text}, {"id_te_company", Int64.Type}})
+				in
+				    Typed
+

@@ -1,0 +1,38 @@
+/// Dimension public.lu_te_company: MicroStrategy lookup table of attribute Company
+table 'Dim Company'
+	lineageTag: 6c1c7b20-e1d3-4592-9b5d-8f6bbadc7072
+
+	/// MicroStrategy attribute Company / form ID
+	column 'Company ID'
+		dataType: int64
+		lineageTag: 71554364-1021-474d-b9ea-a832d8771cff
+		summarizeBy: none
+		sourceColumn: Company ID
+
+	/// MicroStrategy attribute Company / form DESC
+	column Company
+		dataType: string
+		lineageTag: 128a90f1-9ae1-4073-8532-79005f31b9c6
+		summarizeBy: none
+		sourceColumn: Company
+		sortByColumn: 'Company ID'
+
+	column id_te_group
+		dataType: int64
+		isHidden
+		lineageTag: ce4c2f58-dbfc-4b3c-8d25-1efb0241ee56
+		summarizeBy: none
+		sourceColumn: id_te_group
+
+	partition 'Dim Company' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_te_company"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_te_company", "ds_te_company", "id_te_group"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_te_company", "Company ID"}, {"ds_te_company", "Company"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Company ID", Int64.Type}, {"Company", type text}, {"id_te_group", Int64.Type}})
+				in
+				    Typed
+

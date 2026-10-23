@@ -1,0 +1,8 @@
+relationship e8fee4b0-a5a3-4b68-a463-331e8282ca69
+	fromColumn: fact_sales_by_region_2.Year
+	toColumn: Year.Year
+
+relationship 0df603e4-ab83-4236-adb0-e3d3e3f85c4b
+	fromColumn: fact_sales_by_manufacture.Year
+	toColumn: Year.Year
+

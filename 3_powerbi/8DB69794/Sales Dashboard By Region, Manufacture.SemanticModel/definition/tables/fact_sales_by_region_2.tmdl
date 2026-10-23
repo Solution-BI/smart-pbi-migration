@@ -1,0 +1,100 @@
+/// Migrated from MicroStrategy dataset 284E0A6C2B41A759C570ECB427FCBA1D (Super Cube / Data Import)
+table fact_sales_by_region_2
+	lineageTag: a76c0590-1fb4-4a44-aa0f-e508ed4e137f
+
+	/// MicroStrategy metric Gross Sales. Assumes the Data Import default aggregation (Sum). Source SQL expression: SUM("a11"."GROSS_SALES_AMOUNT").
+	measure 'Gross Sales' = SUM('fact_sales_by_region_2'[GROSS_SALES])
+		formatString: #,##0"M",,
+		lineageTag: d784f776-6f20-4f85-a986-2e0516a04f95
+
+	/// MicroStrategy metric Discount Amount. Assumes the Data Import default aggregation (Sum). Source SQL expression: SUM("a11"."DISCOUNT_AMOUNT").
+	measure 'Discount Amount' = SUM('fact_sales_by_region_2'[DISCOUNT_AMOUNT])
+		formatString: #,##0"M",,
+		lineageTag: f7c1ed7b-11c9-40d7-9eb2-4b01d3bfe535
+
+	/// MicroStrategy metric Tax Amount. Assumes the Data Import default aggregation (Sum). Source SQL expression: SUM("a11"."TAX_AMOUNT").
+	measure 'Tax Amount' = SUM('fact_sales_by_region_2'[TAX_AMOUNT])
+		formatString: #,##0"M",,
+		lineageTag: 277c6636-8f82-4e22-a4c1-d58ee188ab97
+
+	/// MicroStrategy metric Net Profit. Created in the MicroStrategy dashboard as (([Gross Sales] - [Tax Amount]) - [Discount Amount]) (read from the .mstr export).
+	measure 'Net Profit' = ([Gross Sales] - [Tax Amount]) - [Discount Amount]
+		formatString: #,##0"M",,
+		lineageTag: dbb3a2c9-d90d-42b9-b064-31d48876d6ba
+
+	/// MicroStrategy attribute Year / form ID
+	column Year
+		dataType: int64
+		isHidden
+		lineageTag: 72f4fc11-038c-4471-9750-40c97deb3542
+		summarizeBy: none
+		sourceColumn: Year
+
+	/// MicroStrategy attribute Region / form Region Name
+	column 'Region Name'
+		dataType: string
+		lineageTag: dbbef1ac-8efe-498d-b551-bbc5bf457c60
+		summarizeBy: none
+		sourceColumn: Region Name
+		sortByColumn: 'Region Code'
+
+	/// MicroStrategy attribute Region / form Region Code
+	column 'Region Code'
+		dataType: int64
+		lineageTag: 2c3dddf3-b653-4fdf-b07f-4109b7cefd8f
+		summarizeBy: none
+		sourceColumn: Region Code
+
+	/// MicroStrategy attribute Country / form Country
+	column Country
+		dataType: string
+		lineageTag: beb0b441-f0f8-4c5a-bedb-74fd8df183fb
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: Country
+		sortByColumn: 'Country Code'
+
+	/// MicroStrategy attribute Country / form Country Code
+	column 'Country Code'
+		dataType: string
+		lineageTag: 6ae09221-0932-401c-a7d0-7a624b2d692e
+		summarizeBy: none
+		sourceColumn: Country Code
+
+	/// Source column of MicroStrategy metric Gross Sales
+	column GROSS_SALES
+		dataType: double
+		isHidden
+		lineageTag: 60309c83-64ae-477d-9a09-b2dbb0c8648d
+		summarizeBy: sum
+		sourceColumn: GROSS_SALES
+
+	/// Source column of MicroStrategy metric Discount Amount
+	column DISCOUNT_AMOUNT
+		dataType: double
+		isHidden
+		lineageTag: 5abafd14-91a6-4582-8e65-0bbd69d0c7de
+		summarizeBy: sum
+		sourceColumn: DISCOUNT_AMOUNT
+
+	/// Source column of MicroStrategy metric Tax Amount
+	column TAX_AMOUNT
+		dataType: double
+		isHidden
+		lineageTag: 53c04abd-0dd3-4490-932e-b9207a4c1a0b
+		summarizeBy: sum
+		sourceColumn: TAX_AMOUNT
+
+	partition fact_sales_by_region_2 = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(SourceServer, SourceWarehouse),
+				    Database = Source{[Name = SourceDatabase, Kind = "Database"]}[Data],
+				    Query = Value.NativeQuery(Database, "select#(lf)      ""a14"".""YEAR"" ""YEAR"",#(lf)      ""a16"".""REGION_CODE"" ""REGION_CODE"",#(lf)      max(""a17"".""REGION"") ""REGION"",#(lf)      ""a12"".""COUNTRY_CODE"" ""COUNTRY_CODE"",#(lf)      max(""a15"".""COUNTRY"") ""COUNTRY"",#(lf)      sum(""a11"".""GROSS_SALES_AMOUNT"") ""GROSS_SALES"",#(lf)      sum(""a11"".""DISCOUNT_AMOUNT"") ""DISCOUNT_AMOUNT"",#(lf)      sum(""a11"".""TAX_AMOUNT"") ""TAX_AMOUNT""#(lf)from#(lf)      ""ASEAN_MSTR_TPCH"".""FACT_ORDER_BASE"" ""a11""#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_CUS_CUSTOMER"" ""a12"" on (""a11"".""CUSTOMER_CODE"" = ""a12"".""CUSTOMER_CODE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_CAL_DATE"" ""a13"" on (""a11"".""ORDER_DATE"" = ""a13"".""DATE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_CAL_MONTH"" ""a14"" on (""a13"".""MONTH_CODE"" = ""a14"".""MONTH_CODE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_GEO_COUNTRY"" ""a15"" on (""a12"".""COUNTRY_CODE"" = ""a15"".""COUNTRY_CODE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_GEO_SUB_REGION"" ""a16"" on (#(lf)            ""a15"".""SUB_REGION_CODE"" = ""a16"".""SUB_REGION_CODE""#(lf)      )#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_GEO_REGION"" ""a17"" on (""a16"".""REGION_CODE"" = ""a17"".""REGION_CODE"")#(lf)group by#(lf)      ""a14"".""YEAR"",#(lf)      ""a16"".""REGION_CODE"",#(lf)      ""a12"".""COUNTRY_CODE"""),
+				    RenameMap = [#"year" = "Year", #"region" = "Region Name", #"region_code" = "Region Code", #"country" = "Country", #"country_code" = "Country Code", #"gross_sales" = "GROSS_SALES", #"discount_amount" = "DISCOUNT_AMOUNT", #"tax_amount" = "TAX_AMOUNT"],
+				    Renamed = Table.TransformColumnNames(Query, (c) => Record.FieldOrDefault(RenameMap, Text.Lower(c), c)),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Year", Int64.Type}, {"Region Name", type text}, {"Region Code", Int64.Type}, {"Country", type text}, {"Country Code", type text}, {"GROSS_SALES", type number}, {"DISCOUNT_AMOUNT", type number}, {"TAX_AMOUNT", type number}})
+				in
+				    Typed
+

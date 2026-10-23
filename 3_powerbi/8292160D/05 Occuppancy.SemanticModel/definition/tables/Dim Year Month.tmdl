@@ -1,0 +1,59 @@
+/// Dimension public.lu_tm_yyyymm: MicroStrategy lookup table of attribute Year Month
+table 'Dim Year Month'
+	lineageTag: 7ab165f6-a435-4e05-9c72-357404978e6c
+
+	/// MicroStrategy attribute Year Month / form ID
+	column 'Year Month ID'
+		dataType: int64
+		lineageTag: 0ace171c-0fcc-4439-894d-e6fa733244d3
+		summarizeBy: none
+		sourceColumn: Year Month ID
+
+	/// MicroStrategy attribute Year Month / form DESC
+	column 'Year Month'
+		dataType: string
+		lineageTag: 68a20eaf-1138-4a1c-a8d0-03445b795e42
+		summarizeBy: none
+		sourceColumn: Year Month
+		sortByColumn: 'Year Month ID'
+
+	/// MicroStrategy attribute Year Month / form Short Desc
+	column 'Year Month Short Desc'
+		dataType: string
+		lineageTag: 0cd12524-f88f-4753-9e79-a4fd179a8236
+		summarizeBy: none
+		sourceColumn: Year Month Short Desc
+		sortByColumn: 'Year Month ID'
+
+	column Year
+		dataType: int64
+		lineageTag: 5a2c9ac0-c6f7-4f40-8a4d-cda7529a5f48
+		summarizeBy: none
+		sourceColumn: Year
+
+	column id_tm_yyyymm_pv
+		dataType: int64
+		isHidden
+		lineageTag: 843f2cfb-3c45-4f85-a395-b35ed4281b60
+		summarizeBy: none
+		sourceColumn: id_tm_yyyymm_pv
+
+	column id_tm_yyyymm_ly
+		dataType: int64
+		isHidden
+		lineageTag: ab7f19cc-cbb5-4d70-9188-8090f1f2e764
+		summarizeBy: none
+		sourceColumn: id_tm_yyyymm_ly
+
+	partition 'Dim Year Month' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_tm_yyyymm"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_tm_yyyymm", "ds_tm_yyyymm", "ds_tm_yyyymm_short", "id_tm_yyyy", "id_tm_yyyymm_pv", "id_tm_yyyymm_ly"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_tm_yyyymm", "Year Month ID"}, {"ds_tm_yyyymm", "Year Month"}, {"ds_tm_yyyymm_short", "Year Month Short Desc"}, {"id_tm_yyyy", "Year"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Year Month ID", Int64.Type}, {"Year Month", type text}, {"Year Month Short Desc", type text}, {"Year", Int64.Type}, {"id_tm_yyyymm_pv", Int64.Type}, {"id_tm_yyyymm_ly", Int64.Type}})
+				in
+				    Typed
+

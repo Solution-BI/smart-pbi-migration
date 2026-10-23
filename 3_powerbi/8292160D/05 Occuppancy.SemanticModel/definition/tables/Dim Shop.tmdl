@@ -1,0 +1,45 @@
+/// Dimension public.lu_ge_shop: MicroStrategy lookup table of attribute Shop
+table 'Dim Shop'
+	lineageTag: 08de69aa-66e8-4188-b308-2e7194444e46
+
+	/// MicroStrategy attribute Shop / form ID
+	column 'Shop ID'
+		dataType: int64
+		lineageTag: 996bfa58-5b51-42a3-a73a-72ca3958693f
+		summarizeBy: none
+		sourceColumn: Shop ID
+
+	/// MicroStrategy attribute Shop / form DESC
+	column Shop
+		dataType: string
+		lineageTag: cf822ca1-efae-4f72-9694-3dc0de11ef4b
+		summarizeBy: none
+		sourceColumn: Shop
+		sortByColumn: 'Shop ID'
+
+	column id_te_tenant
+		dataType: int64
+		isHidden
+		lineageTag: 6e51baf6-5aba-42bc-a446-eea131afa61b
+		summarizeBy: none
+		sourceColumn: id_te_tenant
+
+	column id_ge_shop_type
+		dataType: int64
+		isHidden
+		lineageTag: 7e8591c2-8035-48a2-82ee-72126e595d6f
+		summarizeBy: none
+		sourceColumn: id_ge_shop_type
+
+	partition 'Dim Shop' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_ge_shop"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_ge_shop", "ds_ge_shop", "id_te_tenant", "id_ge_shop_type"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_ge_shop", "Shop ID"}, {"ds_ge_shop", "Shop"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Shop ID", Int64.Type}, {"Shop", type text}, {"id_te_tenant", Int64.Type}, {"id_ge_shop_type", Int64.Type}})
+				in
+				    Typed
+

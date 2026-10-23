@@ -1,0 +1,3 @@
+# Real server names are replaced with placeholders when committed (filter defined in the local .git/config only)
+*.tmdl filter=redact
+*.md filter=redact

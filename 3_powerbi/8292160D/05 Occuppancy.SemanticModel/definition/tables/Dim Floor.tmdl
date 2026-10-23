@@ -1,0 +1,31 @@
+/// Dimension public.lu_ge_floor: MicroStrategy lookup table of attribute Floor
+table 'Dim Floor'
+	lineageTag: 3bf5f80d-4c7c-4ecb-ae62-32c2dd3ff1b6
+
+	/// MicroStrategy attribute Floor / form ID
+	column 'Floor ID'
+		dataType: int64
+		lineageTag: dbffe4bd-eaba-4bd6-9767-3d117bcf6d3b
+		summarizeBy: none
+		sourceColumn: Floor ID
+
+	/// MicroStrategy attribute Floor / form DESC
+	column Floor
+		dataType: string
+		lineageTag: 9479614f-ba4a-48a6-b45a-379ba2870dfd
+		summarizeBy: none
+		sourceColumn: Floor
+		sortByColumn: 'Floor ID'
+
+	partition 'Dim Floor' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_ge_floor"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_ge_floor", "ds_ge_floor"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_ge_floor", "Floor ID"}, {"ds_ge_floor", "Floor"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Floor ID", Int64.Type}, {"Floor", type text}})
+				in
+				    Typed
+

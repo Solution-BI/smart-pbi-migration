@@ -1,0 +1,21 @@
+/// Shared by the MicroStrategy datasets that link attribute Year
+table Year
+	lineageTag: 4715bcb4-d580-45a8-a647-f801f312a854
+
+	/// MicroStrategy attribute Year / form linked across datasets
+	column Year
+		dataType: int64
+		lineageTag: ab856c75-1620-4823-82fa-1621bc12f997
+		summarizeBy: none
+		sourceColumn: [Year]
+
+	partition Year = calculated
+		mode: import
+		source =
+				DISTINCT(
+				    UNION(
+				        SELECTCOLUMNS('fact_sales_by_region_2', "Year", 'fact_sales_by_region_2'[Year]),
+				        SELECTCOLUMNS('fact_sales_by_manufacture', "Year", 'fact_sales_by_manufacture'[Year])
+				    )
+				)
+

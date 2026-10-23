@@ -1,0 +1,31 @@
+/// Dimension public.lu_te_group: MicroStrategy lookup table of attribute Tenant Group
+table 'Dim Tenant Group'
+	lineageTag: 6d1c7401-7c67-4c81-8a10-00647ead8394
+
+	/// MicroStrategy attribute Tenant Group / form ID
+	column 'Tenant Group ID'
+		dataType: int64
+		lineageTag: b57b2947-805e-4c01-a546-9b749937f259
+		summarizeBy: none
+		sourceColumn: Tenant Group ID
+
+	/// MicroStrategy attribute Tenant Group / form DESC
+	column 'Tenant Group'
+		dataType: string
+		lineageTag: 6c610f70-7632-4e42-90eb-f8c9888e666f
+		summarizeBy: none
+		sourceColumn: Tenant Group
+		sortByColumn: 'Tenant Group ID'
+
+	partition 'Dim Tenant Group' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_te_group"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_te_group", "ds_te_group"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_te_group", "Tenant Group ID"}, {"ds_te_group", "Tenant Group"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Tenant Group ID", Int64.Type}, {"Tenant Group", type text}})
+				in
+				    Typed
+

@@ -1,0 +1,68 @@
+/// Migrated from MicroStrategy dataset 1ADD9269574898257879A7BEC425B9F9 (Super Cube / Data Import)
+table fact_sales_by_region
+	lineageTag: 6c444887-a00a-4401-9fea-a13d6f663593
+
+	/// MicroStrategy metric Gross Sales. Assumes the Data Import default aggregation (Sum). Source SQL expression: SUM("a11"."GROSS_SALES_AMOUNT").
+	measure 'Gross Sales' = SUM('fact_sales_by_region'[GROSS_SALES])
+		formatString: #,##0"M",,
+		lineageTag: 3f2f33c8-98ac-4b05-ac08-69568d42305b
+
+	/// MicroStrategy attribute Year / form ID
+	column Year
+		dataType: int64
+		lineageTag: 094233ae-f2a4-4197-84ea-84082bc62331
+		summarizeBy: none
+		sourceColumn: Year
+
+	/// MicroStrategy attribute Region / form Region Name
+	column 'Region Name'
+		dataType: string
+		lineageTag: ac7573bb-1dfc-4791-907f-19362ac38da7
+		summarizeBy: none
+		sourceColumn: Region Name
+		sortByColumn: 'Region Code'
+
+	/// MicroStrategy attribute Region / form Region Code
+	column 'Region Code'
+		dataType: int64
+		lineageTag: 988a52ae-7be3-4669-ad6c-17a95757681e
+		summarizeBy: none
+		sourceColumn: Region Code
+
+	/// MicroStrategy attribute Country / form Country
+	column Country
+		dataType: string
+		lineageTag: 76632509-7fce-4479-b1a1-6f9cbcd83cee
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: Country
+		sortByColumn: 'Country Code'
+
+	/// MicroStrategy attribute Country / form Country Code
+	column 'Country Code'
+		dataType: string
+		lineageTag: 408ccbb2-3492-4867-bb23-40210b1d91c8
+		summarizeBy: none
+		sourceColumn: Country Code
+
+	/// Source column of MicroStrategy metric Gross Sales
+	column GROSS_SALES
+		dataType: double
+		isHidden
+		lineageTag: 72a6e240-13cf-4a51-85a0-43b55b3b2185
+		summarizeBy: sum
+		sourceColumn: GROSS_SALES
+
+	partition fact_sales_by_region = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(SourceServer, SourceWarehouse),
+				    Database = Source{[Name = SourceDatabase, Kind = "Database"]}[Data],
+				    Query = Value.NativeQuery(Database, "select#(lf)      ""a14"".""YEAR"" ""YEAR"",#(lf)      ""a16"".""REGION_CODE"" ""REGION_CODE"",#(lf)      max(""a17"".""REGION"") ""REGION"",#(lf)      ""a12"".""COUNTRY_CODE"" ""COUNTRY_CODE"",#(lf)      max(""a15"".""COUNTRY"") ""COUNTRY"",#(lf)      sum(""a11"".""GROSS_SALES_AMOUNT"") ""GROSS_SALES""#(lf)from#(lf)      ""ASEAN_MSTR_TPCH"".""FACT_ORDER_BASE"" ""a11""#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_CUS_CUSTOMER"" ""a12"" on (""a11"".""CUSTOMER_CODE"" = ""a12"".""CUSTOMER_CODE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_CAL_DATE"" ""a13"" on (""a11"".""ORDER_DATE"" = ""a13"".""DATE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_CAL_MONTH"" ""a14"" on (""a13"".""MONTH_CODE"" = ""a14"".""MONTH_CODE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_GEO_COUNTRY"" ""a15"" on (""a12"".""COUNTRY_CODE"" = ""a15"".""COUNTRY_CODE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_GEO_SUB_REGION"" ""a16"" on (#(lf)            ""a15"".""SUB_REGION_CODE"" = ""a16"".""SUB_REGION_CODE""#(lf)      )#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_GEO_REGION"" ""a17"" on (""a16"".""REGION_CODE"" = ""a17"".""REGION_CODE"")#(lf)group by#(lf)      ""a14"".""YEAR"",#(lf)      ""a16"".""REGION_CODE"",#(lf)      ""a12"".""COUNTRY_CODE"""),
+				    RenameMap = [#"year" = "Year", #"region" = "Region Name", #"region_code" = "Region Code", #"country" = "Country", #"country_code" = "Country Code", #"gross_sales" = "GROSS_SALES"],
+				    Renamed = Table.TransformColumnNames(Query, (c) => Record.FieldOrDefault(RenameMap, Text.Lower(c), c)),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Year", Int64.Type}, {"Region Name", type text}, {"Region Code", Int64.Type}, {"Country", type text}, {"Country Code", type text}, {"GROSS_SALES", type number}})
+				in
+				    Typed
+

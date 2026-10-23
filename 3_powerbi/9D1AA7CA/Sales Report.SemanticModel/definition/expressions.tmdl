@@ -1,0 +1,19 @@
+expression SourceServer = "<account>.snowflakecomputing.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: aa021025-7e7d-4ed0-a543-5522ed3c0977
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression SourceWarehouse = "<warehouse>" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 1a9a2c61-d8f6-4bf9-813e-a81db00db8d6
+
+	annotation PBI_ResultType = Text
+
+expression SourceDatabase = "<database>" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 7e343d0b-e616-4e22-8c7f-26b558f5a507
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

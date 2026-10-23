@@ -1,0 +1,98 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "8dcb55b5e496caf7f171",
+  "position": {
+    "x": 0,
+    "y": 127,
+    "width": 1280,
+    "height": 740,
+    "z": 1000,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_sales_by_manufacture"
+                    }
+                  },
+                  "Property": "Manufacturer"
+                }
+              },
+              "queryRef": "fact_sales_by_manufacture.Manufacturer",
+              "nativeQueryRef": "Manufacturer"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_sales_by_manufacture"
+                    }
+                  },
+                  "Property": "Brand"
+                }
+              },
+              "queryRef": "fact_sales_by_manufacture.Brand",
+              "nativeQueryRef": "Brand"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_sales_by_manufacture"
+                    }
+                  },
+                  "Property": "Gross Sales (fact_sales_by_manufacture)"
+                }
+              },
+              "queryRef": "fact_sales_by_manufacture.Gross Sales (fact_sales_by_manufacture)",
+              "nativeQueryRef": "Gross Sales (fact_sales_by_manufacture)",
+              "displayName": "Gross Sales 2"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Sales by Region and Country'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "annotations": [
+    {
+      "name": "mstrKey",
+      "value": "K4DA8A25B4648ACDF792E7994C8072AC2"
+    },
+    {
+      "name": "mstrType",
+      "value": "grid"
+    }
+  ]
+}

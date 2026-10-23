@@ -1,0 +1,67 @@
+/// Migrated from MicroStrategy dataset 64E453F3D0437443180A86B3AB0B4248 (Super Cube / Data Import)
+table fact_sales_by_manufacture
+	lineageTag: 68be80c7-eb83-4ff2-b5ae-634ff8e15bc1
+
+	/// MicroStrategy metric Gross Sales. Assumes the Data Import default aggregation (Sum). Source SQL expression: SUM(("a11"."ORDERED_QUANTITY" * "a11"."RETAIL_PRICE")).
+	measure 'Gross Sales (fact_sales_by_manufacture)' = SUM('fact_sales_by_manufacture'[GROSS_SALES])
+		lineageTag: 6710d7cc-45e1-4bd5-9fa0-89d9f7a0f393
+
+	/// MicroStrategy attribute Year / form ID
+	column Year
+		dataType: int64
+		isHidden
+		lineageTag: e6f2f439-5a29-4c01-9801-a740559c3640
+		summarizeBy: none
+		sourceColumn: Year
+
+	/// MicroStrategy attribute Manufacturer / form Manufacturer
+	column Manufacturer
+		dataType: string
+		lineageTag: 94ccf810-e895-4f83-b204-6b023d528c42
+		summarizeBy: none
+		sourceColumn: Manufacturer
+		sortByColumn: 'Manufacturer Code'
+
+	/// MicroStrategy attribute Manufacturer / form Code
+	column 'Manufacturer Code'
+		dataType: int64
+		lineageTag: 2c01100f-b2aa-4487-b546-36cf51fc9397
+		summarizeBy: none
+		sourceColumn: Manufacturer Code
+
+	/// MicroStrategy attribute Brand / form Brand
+	column Brand
+		dataType: string
+		lineageTag: a7e12c24-9c1d-43c6-9263-dc5cf57214bf
+		summarizeBy: none
+		sourceColumn: Brand
+		sortByColumn: 'Brand Code'
+
+	/// MicroStrategy attribute Brand / form Code
+	column 'Brand Code'
+		dataType: int64
+		lineageTag: 68131e32-6b95-4d9f-9cdf-261d9c7e2a38
+		summarizeBy: none
+		sourceColumn: Brand Code
+
+	/// Source column of MicroStrategy metric Gross Sales
+	column GROSS_SALES
+		dataType: double
+		isHidden
+		lineageTag: 5b80594e-2964-4e81-8d8f-69b41c4e5ac4
+		summarizeBy: sum
+		sourceColumn: GROSS_SALES
+
+	partition fact_sales_by_manufacture = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(SourceServer, SourceWarehouse),
+				    Database = Source{[Name = SourceDatabase, Kind = "Database"]}[Data],
+				    Query = Value.NativeQuery(Database, "select#(lf)      ""a14"".""YEAR"" ""YEAR"",#(lf)      ""a15"".""MANUFACTURER_CODE"" ""MANUFACTURER_CODE"",#(lf)      max(""a16"".""MANUFACTURER"") ""MANUFACTURER"",#(lf)      ""a12"".""BRAND_CODE"" ""BRAND_CODE"",#(lf)      max(""a15"".""BRAND"") ""BRAND"",#(lf)      sum(#(lf)            (""a11"".""ORDERED_QUANTITY"" * ""a11"".""RETAIL_PRICE"")#(lf)      ) ""GROSS_SALES""#(lf)from#(lf)      ""ASEAN_MSTR_TPCH"".""FACT_ORDER_LINE_ITEM_BASE"" ""a11""#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_PRD_PRODUCT"" ""a12"" on (""a11"".""PRODUCT_CODE"" = ""a12"".""PRODUCT_CODE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_CAL_DATE"" ""a13"" on (""a11"".""ORDER_DATE"" = ""a13"".""DATE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_CAL_MONTH"" ""a14"" on (""a13"".""MONTH_CODE"" = ""a14"".""MONTH_CODE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_PRD_BRAND"" ""a15"" on (""a12"".""BRAND_CODE"" = ""a15"".""BRAND_CODE"")#(lf)      join ""ASEAN_MSTR_TPCH"".""LU_PRD_MANUFACTURER"" ""a16"" on (#(lf)            ""a15"".""MANUFACTURER_CODE"" = ""a16"".""MANUFACTURER_CODE""#(lf)      )#(lf)group by#(lf)      ""a14"".""YEAR"",#(lf)      ""a15"".""MANUFACTURER_CODE"",#(lf)      ""a12"".""BRAND_CODE"""),
+				    RenameMap = [#"year" = "Year", #"manufacturer" = "Manufacturer", #"manufacturer_code" = "Manufacturer Code", #"brand" = "Brand", #"brand_code" = "Brand Code", #"gross_sales" = "GROSS_SALES"],
+				    Renamed = Table.TransformColumnNames(Query, (c) => Record.FieldOrDefault(RenameMap, Text.Lower(c), c)),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Year", Int64.Type}, {"Manufacturer", type text}, {"Manufacturer Code", Int64.Type}, {"Brand", type text}, {"Brand Code", Int64.Type}, {"GROSS_SALES", type number}})
+				in
+				    Typed
+

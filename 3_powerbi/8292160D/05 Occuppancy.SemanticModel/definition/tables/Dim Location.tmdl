@@ -1,0 +1,63 @@
+/// Dimension public.lu_ge_location: MicroStrategy lookup table of attribute Location
+table 'Dim Location'
+	lineageTag: 97062d8a-b489-401d-9e97-57df8c7378c6
+
+	/// MicroStrategy attribute Location / form ID
+	column 'Location ID'
+		dataType: int64
+		lineageTag: 6c4d8fcf-758f-4daf-9171-1bee03fcb4cd
+		summarizeBy: none
+		sourceColumn: Location ID
+
+	/// MicroStrategy attribute Location / form DESC
+	column Location
+		dataType: string
+		lineageTag: d6f63bb0-da86-4c7a-a301-96fc3467fb3e
+		summarizeBy: none
+		sourceColumn: Location
+		sortByColumn: 'Location ID'
+
+	column id_ge_shop
+		dataType: int64
+		isHidden
+		lineageTag: a70ba651-b96d-4f64-abc1-a4261b7b2794
+		summarizeBy: none
+		sourceColumn: id_ge_shop
+
+	column id_ge_area
+		dataType: int64
+		isHidden
+		lineageTag: e3be6231-f58d-4bf2-b384-e6320f5d0f9d
+		summarizeBy: none
+		sourceColumn: id_ge_area
+
+	column id_ge_floor
+		dataType: int64
+		isHidden
+		lineageTag: 0d2f6a54-76be-4da4-99ca-b0cecd53907b
+		summarizeBy: none
+		sourceColumn: id_ge_floor
+
+	column id_ge_mall
+		dataType: int64
+		isHidden
+		lineageTag: 85a61eeb-dd70-46a6-b898-24341ae35109
+		summarizeBy: none
+		sourceColumn: id_ge_mall
+
+	partition 'Dim Location' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_ge_location"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_ge_location", "ds_ge_location", "id_ge_shop", "id_ge_floor", "id_ge_area", "id_ge_mall"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_ge_location", "Location ID"}, {"ds_ge_location", "Location"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Location ID", Int64.Type}, {"Location", type text}, {"id_ge_shop", Int64.Type}, {"id_ge_floor", Int64.Type}, {"id_ge_area", Int64.Type}, {"id_ge_mall", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

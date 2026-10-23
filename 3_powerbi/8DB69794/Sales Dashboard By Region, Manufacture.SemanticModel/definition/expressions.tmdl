@@ -1,0 +1,15 @@
+expression SourceServer = "<snowflake-account>.snowflakecomputing.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: ca17f593-089d-4725-a0b2-44da69468774
+
+	annotation PBI_ResultType = Text
+
+expression SourceWarehouse = "COMPUTE_WH" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 2d0009bd-a269-4825-9bc4-feb01893d444
+
+	annotation PBI_ResultType = Text
+
+expression SourceDatabase = "SANDBOX_DB" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 31a5e217-69e5-4c25-bbe4-c478d77ed28e
+
+	annotation PBI_ResultType = Text
+

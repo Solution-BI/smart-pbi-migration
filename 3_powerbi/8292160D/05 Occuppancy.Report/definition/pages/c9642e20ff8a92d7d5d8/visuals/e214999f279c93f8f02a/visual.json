@@ -1,0 +1,188 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "e214999f279c93f8f02a",
+  "position": {
+    "x": 678,
+    "y": 144,
+    "z": 6000,
+    "height": 208,
+    "width": 587,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim Area"
+                    }
+                  },
+                  "Property": "Area"
+                }
+              },
+              "queryRef": "Dim Area.Area",
+              "nativeQueryRef": "Area",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact tr_oc_yyyymm"
+                    }
+                  },
+                  "Property": "Occupancy (Metric)"
+                }
+              },
+              "queryRef": "Fact tr_oc_yyyymm.Occupancy (Metric)",
+              "nativeQueryRef": "Occupancy (Metric)",
+              "displayName": "Occupancy"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Dim Area"
+                  }
+                },
+                "Property": "Area"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "valueAxis": [
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Occupancy'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Area'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'BY AREA'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "bed6efe28553a9072629",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim Area"
+              }
+            },
+            "Property": "Area"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ae27c9d19aed3b512de5",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact tr_oc_yyyymm"
+              }
+            },
+            "Property": "Occupancy (Metric)"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "name": "mstrKey",
+      "value": "W1354"
+    },
+    {
+      "name": "mstrType",
+      "value": "grid"
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+/// Fact table public.tr_oc_yyyymm, aggregated by the MicroStrategy cube SQL
+table 'Fact tr_oc_yyyymm'
+	lineageTag: 31dc852a-f6e4-46ed-bade-23b1bc824254
+
+	/// MicroStrategy metric SQM (Occupied). MicroStrategy base metric: sum of fact 'SQM Occupied' = CASE WHEN id_is_occupancy IN (2, 3) THEN 0 ELSE mt_ge_sqm END on tr_oc_yyyymm.
+	measure 'SQM (Occupied)' = SUMX('Fact tr_oc_yyyymm', IF('Fact tr_oc_yyyymm'[id_is_occupancy] IN {2, 3}, 0, 'Fact tr_oc_yyyymm'[mt_ge_sqm]))
+		isHidden
+		lineageTag: a52e5dc6-cfbb-428e-be6a-5de3cd7cdefa
+
+	/// MicroStrategy metric SQM. MicroStrategy base metric: sum of fact 'SQM' = mt_ge_sqm on tr_oc_yyyymm.
+	measure SQM = SUM('Fact tr_oc_yyyymm'[mt_ge_sqm])
+		isHidden
+		lineageTag: 54250a5f-2d77-4bdc-8cef-30f4f22622f0
+
+	/// MicroStrategy metric SQM (Occupied) (LM). MicroStrategy base metric: sum of fact 'SQM Occupied' = CASE WHEN id_is_occupancy IN (2, 3) THEN 0 ELSE mt_ge_sqm END on tr_oc_yyyymm. MicroStrategy transformation: joins tr_oc_yyyymm.id_tm_yyyymm to lu_tm_yyyymm.id_tm_yyyymm_pv, rebuilt as the periods in 'Dim Year Month'[id_tm_yyyymm_pv] of the periods in context.
+	measure 'SQM (Occupied) (LM)' =
+			CALCULATE(
+			    SUMX('Fact tr_oc_yyyymm', IF('Fact tr_oc_yyyymm'[id_is_occupancy] IN {2, 3}, 0, 'Fact tr_oc_yyyymm'[mt_ge_sqm])),
+			    REMOVEFILTERS('Dim Year Month'),
+			    TREATAS(VALUES('Dim Year Month'[id_tm_yyyymm_pv]), 'Fact tr_oc_yyyymm'[id_tm_yyyymm])
+			)
+		isHidden
+		lineageTag: b656ff6b-1957-4f03-aee1-3d8674f271c3
+
+	/// MicroStrategy metric SQM (LM). MicroStrategy base metric: sum of fact 'SQM' = mt_ge_sqm on tr_oc_yyyymm. MicroStrategy transformation: joins tr_oc_yyyymm.id_tm_yyyymm to lu_tm_yyyymm.id_tm_yyyymm_pv, rebuilt as the periods in 'Dim Year Month'[id_tm_yyyymm_pv] of the periods in context.
+	measure 'SQM (LM)' =
+			CALCULATE(
+			    SUM('Fact tr_oc_yyyymm'[mt_ge_sqm]),
+			    REMOVEFILTERS('Dim Year Month'),
+			    TREATAS(VALUES('Dim Year Month'[id_tm_yyyymm_pv]), 'Fact tr_oc_yyyymm'[id_tm_yyyymm])
+			)
+		isHidden
+		lineageTag: 15f9ebc2-d68c-4750-91b8-9eea8f459370
+
+	/// MicroStrategy metric SQM (Occupied) (LY). MicroStrategy base metric: sum of fact 'SQM Occupied' = CASE WHEN id_is_occupancy IN (2, 3) THEN 0 ELSE mt_ge_sqm END on tr_oc_yyyymm. MicroStrategy transformation: joins tr_oc_yyyymm.id_tm_yyyymm to lu_tm_yyyymm.id_tm_yyyymm_ly, rebuilt as the periods in 'Dim Year Month'[id_tm_yyyymm_ly] of the periods in context.
+	measure 'SQM (Occupied) (LY)' =
+			CALCULATE(
+			    SUMX('Fact tr_oc_yyyymm', IF('Fact tr_oc_yyyymm'[id_is_occupancy] IN {2, 3}, 0, 'Fact tr_oc_yyyymm'[mt_ge_sqm])),
+			    REMOVEFILTERS('Dim Year Month'),
+			    TREATAS(VALUES('Dim Year Month'[id_tm_yyyymm_ly]), 'Fact tr_oc_yyyymm'[id_tm_yyyymm])
+			)
+		isHidden
+		lineageTag: 0fc92dfc-b3b4-46f8-ad94-f61cf1a52d48
+
+	/// MicroStrategy metric SQM (LY). MicroStrategy base metric: sum of fact 'SQM' = mt_ge_sqm on tr_oc_yyyymm. MicroStrategy transformation: joins tr_oc_yyyymm.id_tm_yyyymm to lu_tm_yyyymm.id_tm_yyyymm_ly, rebuilt as the periods in 'Dim Year Month'[id_tm_yyyymm_ly] of the periods in context.
+	measure 'SQM (LY)' =
+			CALCULATE(
+			    SUM('Fact tr_oc_yyyymm'[mt_ge_sqm]),
+			    REMOVEFILTERS('Dim Year Month'),
+			    TREATAS(VALUES('Dim Year Month'[id_tm_yyyymm_ly]), 'Fact tr_oc_yyyymm'[id_tm_yyyymm])
+			)
+		isHidden
+		lineageTag: 74f35a18-cfeb-47ad-a6af-87669609e234
+
+	/// MicroStrategy metric Rent. MicroStrategy base metric: sum of fact 'Rent (RCY)' = (mt_oc_rent * mt_is_reporting_currency) on tr_oc_yyyymm.
+	measure Rent = SUMX('Fact tr_oc_yyyymm', 'Fact tr_oc_yyyymm'[mt_oc_rent] * 'Fact tr_oc_yyyymm'[mt_is_reporting_currency])
+		isHidden
+		lineageTag: 67d14e0a-d3d8-4321-a969-ff96824e2385
+
+	/// MicroStrategy metric Rent (LM). MicroStrategy base metric: sum of fact 'Rent (RCY)' = (mt_oc_rent * mt_is_reporting_currency) on tr_oc_yyyymm. MicroStrategy transformation: joins tr_oc_yyyymm.id_tm_yyyymm to lu_tm_yyyymm.id_tm_yyyymm_pv, rebuilt as the periods in 'Dim Year Month'[id_tm_yyyymm_pv] of the periods in context.
+	measure 'Rent (LM)' =
+			CALCULATE(
+			    SUMX('Fact tr_oc_yyyymm', 'Fact tr_oc_yyyymm'[mt_oc_rent] * 'Fact tr_oc_yyyymm'[mt_is_reporting_currency]),
+			    REMOVEFILTERS('Dim Year Month'),
+			    TREATAS(VALUES('Dim Year Month'[id_tm_yyyymm_pv]), 'Fact tr_oc_yyyymm'[id_tm_yyyymm])
+			)
+		isHidden
+		lineageTag: 33844f40-959d-4894-99da-ebe6730472d0
+
+	/// MicroStrategy metric Rent (LY). MicroStrategy base metric: sum of fact 'Rent (RCY)' = (mt_oc_rent * mt_is_reporting_currency) on tr_oc_yyyymm. MicroStrategy transformation: joins tr_oc_yyyymm.id_tm_yyyymm to lu_tm_yyyymm.id_tm_yyyymm_ly, rebuilt as the periods in 'Dim Year Month'[id_tm_yyyymm_ly] of the periods in context.
+	measure 'Rent (LY)' =
+			CALCULATE(
+			    SUMX('Fact tr_oc_yyyymm', 'Fact tr_oc_yyyymm'[mt_oc_rent] * 'Fact tr_oc_yyyymm'[mt_is_reporting_currency]),
+			    REMOVEFILTERS('Dim Year Month'),
+			    TREATAS(VALUES('Dim Year Month'[id_tm_yyyymm_ly]), 'Fact tr_oc_yyyymm'[id_tm_yyyymm])
+			)
+		isHidden
+		lineageTag: 6242ff1b-aa2b-4c42-b326-2becea73eda3
+
+	/// MicroStrategy metric Sales Value. MicroStrategy base metric: sum of fact 'Sales Value (RCY)' = (mt_is_reporting_currency * mt_sa_value) on tr_oc_yyyymm.
+	measure 'Sales Value' = SUMX('Fact tr_oc_yyyymm', 'Fact tr_oc_yyyymm'[mt_is_reporting_currency] * 'Fact tr_oc_yyyymm'[mt_sa_value])
+		isHidden
+		lineageTag: 27eeb74c-3c04-4adc-bc89-b44afe09da34
+
+	/// MicroStrategy metric Sales Value (LCY). MicroStrategy base metric: sum of fact 'Sales Value (LCY)' = mt_sa_value on tr_oc_yyyymm.
+	measure 'Sales Value (LCY)' = SUM('Fact tr_oc_yyyymm'[mt_sa_value])
+		isHidden
+		lineageTag: beb7dc19-06dc-4a80-9cca-83798b46b1cd
+
+	/// MicroStrategy metric Occupancy. MicroStrategy compound metric, rebuilt from its formula.
+	measure 'Occupancy (Metric)' = DIVIDE([SQM (Occupied)], [SQM])
+		formatString: 0.0%
+		lineageTag: 0e6b1a4c-4e0e-44b8-9213-3f1b2e3c3821
+
+	/// MicroStrategy metric Occupancy (LM). MicroStrategy compound metric, rebuilt from its formula.
+	measure 'Occupancy (LM)' = DIVIDE([SQM (Occupied) (LM)], [SQM (LM)])
+		formatString: 0.0%
+		lineageTag: 6e2c24c6-f7fd-4550-a4e9-ba2d33b4749a
+
+	/// MicroStrategy metric Occupancy (LY). MicroStrategy compound metric, rebuilt from its formula.
+	measure 'Occupancy (LY)' = DIVIDE([SQM (Occupied) (LY)], [SQM (LY)])
+		formatString: 0.0%
+		lineageTag: 08709251-8ff0-46cf-879c-9e6f628df31d
+
+	/// MicroStrategy metric Rent/SQM. MicroStrategy compound metric, rebuilt from its formula.
+	measure Rent/SQM = DIVIDE([Rent], [SQM])
+		lineageTag: 8e165d1d-d43b-485f-9567-8aa75b4c0980
+
+	/// MicroStrategy metric Rent/SQM (LM). MicroStrategy compound metric, rebuilt from its formula.
+	measure 'Rent/SQM (LM)' = DIVIDE([Rent (LM)], [SQM (LM)])
+		lineageTag: 660a877b-dabb-45cf-a6ce-84ea4ca12e06
+
+	/// MicroStrategy metric Rent/SQM (LY). MicroStrategy compound metric, rebuilt from its formula.
+	measure 'Rent/SQM (LY)' = DIVIDE([Rent (LY)], [SQM (LY)])
+		lineageTag: 37a15ad5-afd9-4e00-be62-1827a346c143
+
+	/// MicroStrategy metric Sales/SQM. MicroStrategy compound metric, rebuilt from its formula.
+	measure Sales/SQM = DIVIDE([Sales Value], [SQM])
+		lineageTag: abd42b6d-5d2c-4d76-a395-9d8cd8b101d5
+
+	/// MicroStrategy metric Sales/SQM (LCY). MicroStrategy compound metric, rebuilt from its formula.
+	measure 'Sales/SQM (LCY)' = DIVIDE([Sales Value (LCY)], [SQM])
+		lineageTag: 0cb6b23d-6780-4ea1-b69a-cd46a0c654b0
+
+	/// MicroStrategy metric %LM. Created in the MicroStrategy dashboard as (([Occupancy] - [Occupancy (LM)]) / [Occupancy (LM)]) (read from the .mstr export).
+	measure %LM = DIVIDE(([Occupancy (Metric)] - [Occupancy (LM)]), [Occupancy (LM)])
+		formatString: 0.0%
+		lineageTag: 5b38eca3-f862-433b-910c-69b9e7593b14
+
+	/// MicroStrategy metric %LM_Arrow. Created in the MicroStrategy dashboard as [%LM] (read from the .mstr export).
+	measure %LM_Arrow = [%LM]
+		formatString: 0%
+		lineageTag: d5c32107-034e-46ed-bd02-ba9803e2f960
+
+	/// MicroStrategy metric %LY. Created in the MicroStrategy dashboard as (([Occupancy] - [Occupancy (LY)]) / [Occupancy (LY)]) (read from the .mstr export).
+	measure %LY = DIVIDE(([Occupancy (Metric)] - [Occupancy (LY)]), [Occupancy (LY)])
+		formatString: 0.0%
+		lineageTag: 72dcad1b-9fc2-49e1-8dd6-8c0a476772d7
+
+	/// MicroStrategy metric %LY_Arrow. Created in the MicroStrategy dashboard as [%LY] (read from the .mstr export).
+	measure %LY_Arrow = [%LY]
+		formatString: 0%
+		lineageTag: 5791b64b-b89e-4edb-94ab-b4f8391ae74e
+
+	column id_is_occupancy
+		dataType: int64
+		isHidden
+		lineageTag: 32107f70-46b7-4182-a1b2-b1d267753cb7
+		summarizeBy: none
+		sourceColumn: id_is_occupancy
+
+	column id_ge_location
+		dataType: int64
+		isHidden
+		lineageTag: 6756eda7-bf6b-4c23-bb04-3bdcc13c573c
+		summarizeBy: none
+		sourceColumn: id_ge_location
+
+	column id_tm_yyyymm
+		dataType: int64
+		isHidden
+		lineageTag: ab24bfe4-5c39-463e-93a2-6b1e1e2df878
+		summarizeBy: none
+		sourceColumn: id_tm_yyyymm
+
+	column mt_ge_sqm
+		dataType: double
+		isHidden
+		lineageTag: 3aebc72a-529d-4e11-a8ba-adcf7e88dd69
+		summarizeBy: none
+		sourceColumn: mt_ge_sqm
+
+	column mt_oc_rent
+		dataType: int64
+		isHidden
+		lineageTag: 9c47a7d3-32b4-4c87-bf79-89b5f6443d11
+		summarizeBy: none
+		sourceColumn: mt_oc_rent
+
+	column mt_is_reporting_currency
+		dataType: double
+		isHidden
+		lineageTag: ee9a2a8f-6f95-4a6e-b0a3-59dada293fba
+		summarizeBy: none
+		sourceColumn: mt_is_reporting_currency
+
+	column mt_sa_value
+		dataType: int64
+		isHidden
+		lineageTag: 554722c4-ab8c-4960-924f-870df20ca36b
+		summarizeBy: none
+		sourceColumn: mt_sa_value
+
+	partition 'Fact tr_oc_yyyymm' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "tr_oc_yyyymm"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_is_occupancy", "id_tm_yyyymm", "id_ge_location", "mt_ge_sqm", "mt_oc_rent", "mt_is_reporting_currency", "mt_sa_value"}),
+				    Typed = Table.TransformColumnTypes(Columns, {{"id_is_occupancy", Int64.Type}, {"id_tm_yyyymm", Int64.Type}, {"id_ge_location", Int64.Type}, {"mt_ge_sqm", type number}, {"mt_oc_rent", Int64.Type}, {"mt_is_reporting_currency", type number}, {"mt_sa_value", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

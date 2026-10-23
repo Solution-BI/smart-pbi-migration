@@ -1,0 +1,286 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "32f2c5a8b07b32069762",
+  "position": {
+    "x": 71,
+    "y": 144,
+    "z": 3000,
+    "height": 249,
+    "width": 577,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim Mall"
+                    }
+                  },
+                  "Property": "Mall"
+                }
+              },
+              "queryRef": "Dim Mall.Mall",
+              "nativeQueryRef": "Mall"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact tr_oc_yyyymm"
+                    }
+                  },
+                  "Property": "Occupancy (Metric)"
+                }
+              },
+              "queryRef": "Fact tr_oc_yyyymm.Occupancy (Metric)",
+              "nativeQueryRef": "Occupancy (Metric)",
+              "displayName": "Occupancy"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact tr_oc_yyyymm"
+                    }
+                  },
+                  "Property": "Occupancy (LM)"
+                }
+              },
+              "queryRef": "Fact tr_oc_yyyymm.Occupancy (LM)",
+              "nativeQueryRef": "Occupancy (LM)",
+              "displayName": "LM"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact tr_oc_yyyymm"
+                    }
+                  },
+                  "Property": "%LM"
+                }
+              },
+              "queryRef": "Fact tr_oc_yyyymm.%LM",
+              "nativeQueryRef": "%LM"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact tr_oc_yyyymm"
+                    }
+                  },
+                  "Property": "%LM_Arrow"
+                }
+              },
+              "queryRef": "Fact tr_oc_yyyymm.%LM_Arrow",
+              "nativeQueryRef": "%LM_Arrow"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact tr_oc_yyyymm"
+                    }
+                  },
+                  "Property": "Occupancy (LY)"
+                }
+              },
+              "queryRef": "Fact tr_oc_yyyymm.Occupancy (LY)",
+              "nativeQueryRef": "Occupancy (LY)",
+              "displayName": "LY"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact tr_oc_yyyymm"
+                    }
+                  },
+                  "Property": "%LY"
+                }
+              },
+              "queryRef": "Fact tr_oc_yyyymm.%LY",
+              "nativeQueryRef": "%LY"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact tr_oc_yyyymm"
+                    }
+                  },
+                  "Property": "%LY_Arrow"
+                }
+              },
+              "queryRef": "Fact tr_oc_yyyymm.%LY_Arrow",
+              "nativeQueryRef": "%LY_Arrow"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'MALL SUMMARY'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "8fee0f723d7eef6228e2",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim Mall"
+              }
+            },
+            "Property": "Mall"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9b34b019481e2042129a",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact tr_oc_yyyymm"
+              }
+            },
+            "Property": "Occupancy (Metric)"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7c97af789c603749b02f",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact tr_oc_yyyymm"
+              }
+            },
+            "Property": "Occupancy (LM)"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "5c514f4a141c83bcffca",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact tr_oc_yyyymm"
+              }
+            },
+            "Property": "%LM"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a65d6b37f692ec12fc46",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact tr_oc_yyyymm"
+              }
+            },
+            "Property": "%LM_Arrow"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "ce6ec2b70f415808c68b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact tr_oc_yyyymm"
+              }
+            },
+            "Property": "Occupancy (LY)"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "453c59066450cff87a4b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact tr_oc_yyyymm"
+              }
+            },
+            "Property": "%LY"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f0ad576419797dba5220",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact tr_oc_yyyymm"
+              }
+            },
+            "Property": "%LY_Arrow"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "name": "mstrKey",
+      "value": "W708"
+    },
+    {
+      "name": "mstrType",
+      "value": "grid"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Fact tr_oc_yyyymm","Dim Area","Dim Floor","Dim Location","Dim Mall","Dim Shop","Dim Shop Type","Dim Occupancy","Dim Company","Dim Tenant Group","Dim Tenant","Dim Year Month","SourceServer","SourceDatabase"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'Fact tr_oc_yyyymm'
+ref table 'Dim Area'
+ref table 'Dim Floor'
+ref table 'Dim Location'
+ref table 'Dim Mall'
+ref table 'Dim Shop'
+ref table 'Dim Shop Type'
+ref table 'Dim Occupancy'
+ref table 'Dim Company'
+ref table 'Dim Tenant Group'
+ref table 'Dim Tenant'
+ref table 'Dim Year Month'
+
+ref cultureInfo en-US
+

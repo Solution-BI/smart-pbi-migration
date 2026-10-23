@@ -1,0 +1,9 @@
+expression SourceServer = "<snowflake-account>.snowflakecomputing.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 31e5fa8e-ca4c-4d28-ad6e-5d31cdb7e229
+
+expression SourceWarehouse = "COMPUTE_WH" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 2c7b28db-c08f-45ed-a614-4293723f7064
+
+expression SourceDatabase = "SANDBOX_DB" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 0b1809c7-d9c5-4807-99b4-aceb2ba50df6
+

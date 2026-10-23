@@ -1,0 +1,44 @@
+relationship 3663b70e-8e1c-4b1c-a3fe-139a105001cb
+	fromColumn: 'Dim Location'.id_ge_area
+	toColumn: 'Dim Area'.'Area ID'
+
+relationship 2d150315-e893-4ecb-9425-c35da98d1bba
+	fromColumn: 'Dim Location'.id_ge_floor
+	toColumn: 'Dim Floor'.'Floor ID'
+
+relationship ca11f4c9-af9c-44bf-a1ff-a00c88063a95
+	fromColumn: 'Dim Location'.id_ge_mall
+	toColumn: 'Dim Mall'.'Mall ID'
+
+relationship 0717c009-5c28-45c2-99ec-9038b590c2bc
+	fromColumn: 'Dim Location'.id_ge_shop
+	toColumn: 'Dim Shop'.'Shop ID'
+
+relationship ddb6615f-d8da-43fa-9ef9-3900026942af
+	fromColumn: 'Dim Shop'.id_ge_shop_type
+	toColumn: 'Dim Shop Type'.'Shop Type ID'
+
+relationship 18916b37-66d2-46e1-bfcf-e6547569efd7
+	fromColumn: 'Dim Shop'.id_te_tenant
+	toColumn: 'Dim Tenant'.'Tenant ID'
+
+relationship e8ad1679-9845-49a1-b77a-617daa1d23e1
+	fromColumn: 'Dim Company'.id_te_group
+	toColumn: 'Dim Tenant Group'.'Tenant Group ID'
+
+relationship 2bff3404-ef8a-4b11-a4ee-1d562773e5f5
+	fromColumn: 'Dim Tenant'.id_te_company
+	toColumn: 'Dim Company'.'Company ID'
+
+relationship 12c2c7b8-5a8e-4aab-a292-d284c3aee39e
+	fromColumn: 'Fact tr_oc_yyyymm'.id_ge_location
+	toColumn: 'Dim Location'.'Location ID'
+
+relationship 87e793a1-4b9d-4670-bcba-6199b094e63b
+	fromColumn: 'Fact tr_oc_yyyymm'.id_is_occupancy
+	toColumn: 'Dim Occupancy'.'Occupancy ID'
+
+relationship 30fa1790-0dbd-4f53-834e-aecded738346
+	fromColumn: 'Fact tr_oc_yyyymm'.id_tm_yyyymm
+	toColumn: 'Dim Year Month'.'Year Month ID'
+

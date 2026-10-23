@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "05 Occuppancy"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "afe6b564-03cc-5783-b29c-698c7448b010"
+  }
+}

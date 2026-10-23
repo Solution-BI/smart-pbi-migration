@@ -1,0 +1,31 @@
+/// Dimension public.lu_is_occupancy: MicroStrategy lookup table of attribute Occupancy
+table 'Dim Occupancy'
+	lineageTag: 0c35520b-db72-4add-9226-39f333d6442c
+
+	/// MicroStrategy attribute Occupancy / form ID
+	column 'Occupancy ID'
+		dataType: int64
+		lineageTag: e7c0e3a0-9557-4e78-b3c3-9c1e64d33c16
+		summarizeBy: none
+		sourceColumn: Occupancy ID
+
+	/// MicroStrategy attribute Occupancy / form DESC
+	column Occupancy
+		dataType: string
+		lineageTag: 271d62a5-212e-435c-bc9d-bf43f61f167a
+		summarizeBy: none
+		sourceColumn: Occupancy
+		sortByColumn: 'Occupancy ID'
+
+	partition 'Dim Occupancy' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_is_occupancy"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_is_occupancy", "ds_is_occupancy"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_is_occupancy", "Occupancy ID"}, {"ds_is_occupancy", "Occupancy"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Occupancy ID", Int64.Type}, {"Occupancy", type text}})
+				in
+				    Typed
+

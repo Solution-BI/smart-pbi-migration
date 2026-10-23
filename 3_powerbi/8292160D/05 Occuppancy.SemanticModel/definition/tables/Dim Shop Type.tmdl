@@ -1,0 +1,31 @@
+/// Dimension public.lu_ge_shop_type: MicroStrategy lookup table of attribute Shop Type
+table 'Dim Shop Type'
+	lineageTag: 765d11b8-f391-455b-ad56-70d125d95078
+
+	/// MicroStrategy attribute Shop Type / form ID
+	column 'Shop Type ID'
+		dataType: int64
+		lineageTag: 48af9968-a6c2-420b-8585-731592da6338
+		summarizeBy: none
+		sourceColumn: Shop Type ID
+
+	/// MicroStrategy attribute Shop Type / form DESC
+	column 'Shop Type'
+		dataType: string
+		lineageTag: 1850b720-611e-4d19-954e-bddb1b5dcddc
+		summarizeBy: none
+		sourceColumn: Shop Type
+		sortByColumn: 'Shop Type ID'
+
+	partition 'Dim Shop Type' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_ge_shop_type"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_ge_shop_type", "ds_ge_shop_type"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_ge_shop_type", "Shop Type ID"}, {"ds_ge_shop_type", "Shop Type"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Shop Type ID", Int64.Type}, {"Shop Type", type text}})
+				in
+				    Typed
+

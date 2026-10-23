@@ -1,0 +1,31 @@
+/// Dimension public.lu_ge_area: MicroStrategy lookup table of attribute Area
+table 'Dim Area'
+	lineageTag: 6678652c-ff72-4ed3-b568-fdb6931814e9
+
+	/// MicroStrategy attribute Area / form ID
+	column 'Area ID'
+		dataType: int64
+		lineageTag: fd6a9e89-8d5c-4095-946d-f3b5bcc6943d
+		summarizeBy: none
+		sourceColumn: Area ID
+
+	/// MicroStrategy attribute Area / form DESC
+	column Area
+		dataType: string
+		lineageTag: d97215f0-e5ce-441e-ada2-06a79be8ccd0
+		summarizeBy: none
+		sourceColumn: Area
+		sortByColumn: 'Area ID'
+
+	partition 'Dim Area' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_ge_area"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_ge_area", "ds_ge_area"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_ge_area", "Area ID"}, {"ds_ge_area", "Area"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Area ID", Int64.Type}, {"Area", type text}})
+				in
+				    Typed
+

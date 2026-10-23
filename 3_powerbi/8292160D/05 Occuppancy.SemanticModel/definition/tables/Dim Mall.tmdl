@@ -1,0 +1,31 @@
+/// Dimension public.lu_ge_mall: MicroStrategy lookup table of attribute Mall
+table 'Dim Mall'
+	lineageTag: e7cc90de-3891-4988-989c-2d89aa25fc7b
+
+	/// MicroStrategy attribute Mall / form ID
+	column 'Mall ID'
+		dataType: int64
+		lineageTag: 876d2344-f4fa-4e96-b8ac-26240c8f063f
+		summarizeBy: none
+		sourceColumn: Mall ID
+
+	/// MicroStrategy attribute Mall / form DESC
+	column Mall
+		dataType: string
+		lineageTag: 627a426e-402b-4100-8fe7-7f95fd51c450
+		summarizeBy: none
+		sourceColumn: Mall
+		sortByColumn: 'Mall ID'
+
+	partition 'Dim Mall' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(SourceServer, SourceDatabase),
+				    Data = Source{[Schema = "public", Item = "lu_ge_mall"]}[Data],
+				    Columns = Table.SelectColumns(Data, {"id_ge_mall", "ds_ge_mall"}),
+				    Renamed = Table.RenameColumns(Columns, {{"id_ge_mall", "Mall ID"}, {"ds_ge_mall", "Mall"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Mall ID", Int64.Type}, {"Mall", type text}})
+				in
+				    Typed
+

@@ -1,0 +1,55 @@
+/// Migrated from MicroStrategy dataset E33F3182CD4F0533EFDAE38DA9B68F33 (Super Cube / Data Import)
+table Sales
+	lineageTag: 1f954ef8-032f-46d2-868f-48ec2f616834
+
+	/// MicroStrategy metric Sales. Assumes the Data Import default aggregation (Sum). Source SQL expression: SUM(a11.RETAILEXGST).
+	measure Sales = SUM('Sales'[SALES (base)])
+		lineageTag: 5efa868c-e76d-494c-95dc-81e2981d73d1
+
+	/// MicroStrategy metric Row Count - Sales. Auto-generated Data Import row count = rows returned by the source query.
+	measure 'Row Count - Sales' = COUNTROWS('Sales')
+		formatString: #,0
+		lineageTag: 52b7d8c3-be93-47a8-93fa-b3c7f0ac7ead
+
+	/// MicroStrategy attribute Date / form ID
+	column Date
+		dataType: dateTime
+		lineageTag: b4b5f130-b856-4388-aa75-d970c729683b
+		summarizeBy: none
+		sourceColumn: Date
+
+	/// MicroStrategy attribute Branch / form Branch Name
+	column 'Branch Name'
+		dataType: string
+		lineageTag: 6a9d93e8-773b-46f0-8515-e148c818bef9
+		summarizeBy: none
+		sourceColumn: Branch Name
+
+	/// MicroStrategy attribute Branch / form Branch ID
+	column 'Branch ID'
+		dataType: double
+		lineageTag: c2b00ea6-2a4b-4d49-bb3d-7fce78f7f276
+		summarizeBy: none
+		sourceColumn: Branch ID
+
+	/// Source column of MicroStrategy metric Sales
+	column 'SALES (base)'
+		dataType: double
+		isHidden
+		lineageTag: fe04b41a-e203-4c41-87fd-6da159d1f136
+		summarizeBy: sum
+		sourceColumn: SALES (base)
+
+	partition Sales = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(SourceServer, SourceWarehouse),
+				    Database = Source{[Name = SourceDatabase, Kind = "Database"]}[Data],
+				    Query = Value.NativeQuery(Database, "select#(lf)      a11.SALE_DATE date,#(lf)      a11.BRANCH_UNIQUE_ID BRANCH_UNIQUE_ID,#(lf)      max(a12.branchname) branchname,#(lf)      sum(a11.RETAILEXGST) SALES#(lf)from#(lf)      FAIRTHORNE_BI.DEPTSALESDAILY a11#(lf)      join FAIRTHORNE_BI.BRANCH a12 on (a11.BRANCH_UNIQUE_ID = a12.BRANCH_UNIQUE_ID)#(lf)      join FAIRTHORNE_BI.DATES a13 on (a11.SALE_DATE = a13.date)#(lf)group by#(lf)      a11.SALE_DATE,#(lf)      a11.BRANCH_UNIQUE_ID"),
+				    RenameMap = [#"date" = "Date", #"branchname" = "Branch Name", #"branch_unique_id" = "Branch ID", #"sales" = "SALES (base)"],
+				    Renamed = Table.TransformColumnNames(Query, (c) => Record.FieldOrDefault(RenameMap, Text.Lower(c), c)),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Date", type datetime}, {"Branch Name", type text}, {"Branch ID", type number}, {"SALES (base)", type number}})
+				in
+				    Typed
+
